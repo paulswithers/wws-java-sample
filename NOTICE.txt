@@ -1,0 +1,10 @@
+﻿Watson Work Services Java SDK
+Copyright 2017 Paul Withers
+
+This product includes software contributed to 
+OpenNTF Alliance (http://www.OpenNTF.org/)
+
+List of third party software used in this project:
+
+Maven includes the Watson Work Services Java SDK
+
