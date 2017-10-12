@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xe="http://www.ibm.com/xsp/coreex">
+
+	<xp:this.beforePageLoad><![CDATA[#{javascript:sessionBean.checkAuthenticated();}]]></xp:this.beforePageLoad>
+
+	<xe:applicationLayout id="applicationLayout1">
+		<xp:div id="mainPanel">
+			<xp:div id="notAuthenticated">
+				<xp:messages id="messages1"></xp:messages>
+				<xp:this.rendered><![CDATA[#{!sessionBean.authenticated}]]></xp:this.rendered>
+				<xp:button value="Authenticate to Watson Workspace" id="button1">
+					<xp:eventHandler event="onclick" submit="false">
+						<xp:this.script><![CDATA[var appId="#{javascript:sessionBean.getAppId()}";
+var url="#{javascript:context.getUrl().getAddress()}";
+location.href="https://api.watsonwork.ibm.com/oauth/authorize?client_id=" + appId
+				+ "&state=3322&scope=ibmid&redirect_uri=" + url + "&response_type=code"]]></xp:this.script>
+					</xp:eventHandler>
+				</xp:button>
+			</xp:div>
+
+			<xp:div id="authenticated">
+				<xp:this.rendered><![CDATA[#{sessionBean.authenticated}]]></xp:this.rendered>
+
+				<xp:div styleClass="alert alert-success col-xs-12"
+					rendered="#{javascript:requestScope.confirmationMessages != null}">
+					<xp:repeat value="#{requestScope.confirmationMessages}" var="message">
+						<xp:text escape="false">
+							<xp:this.value><![CDATA[<div class="alert-success col-xs-12">#{message}</div>]]></xp:this.value>
+						</xp:text>
+					</xp:repeat>
+				</xp:div>
+				<xe:formTable id="formTable1" disableRowError="true">
+					<xe:formRow id="formRow1" label="Select Space" for="djextListTextBox1">
+						<xe:djextListTextBox id="djextListTextBox1" value="#{sessionBean.selectedSpace}"
+							displayLabel="true" required="true">
+						</xe:djextListTextBox>
+						<xe:valuePicker id="valuePicker1" for="djextListTextBox1">
+							<xe:this.dataProvider>
+								<xe:mapValuePicker options="#{sessionBean.spaces}">
+								</xe:mapValuePicker>
+							</xe:this.dataProvider>
+						</xe:valuePicker>
+						<xp:br></xp:br>
+						<xp:button value="Delete Space" id="button5">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="authenticated">
+								<xp:this.action><![CDATA[#{javascript:sessionBean.deleteSpace();}]]></xp:this.action>
+								<xp:this.script><![CDATA[if (confirmation("Are you sure?")) {
+	return true;
+} else {
+	return false;
+}]]></xp:this.script>
+							</xp:eventHandler>
+						</xp:button>
+						<xp:button value="Add Space" id="button6">
+							<xp:eventHandler event="onclick" submit="false">
+								<xp:this.script><![CDATA[XSP.openDialog("#{id:dialog1}")]]></xp:this.script>
+							</xp:eventHandler>
+						</xp:button>
+						<xp:button value="Reload Spaces" id="button8">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="authenticated" immediate="true">
+								<xp:this.action><![CDATA[#{javascript:sessionBean.loadSpaces();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+					</xe:formRow>
+					<xe:formRow id="formRow2" label="Emails to Add / Remove" for="djSimpleTextarea1">
+						<xe:djSimpleTextarea id="djSimpleTextarea1" value="#{viewScope.selectedEmails}"
+							multipleSeparator=",">
+							<xe:this.converter>
+								<xp:convertList delimiter=","></xp:convertList>
+							</xe:this.converter>
+						</xe:djSimpleTextarea>
+						<xp:br></xp:br>
+						<xp:button value="Add to Space" id="button2">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="authenticated">
+								<xp:this.action><![CDATA[#{javascript:sessionBean.addUsersToSpace();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+						<xp:button value="Remove from Space" id="button3">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="authenticated">
+								<xp:this.action><![CDATA[#{javascript:sessionBean.removeUsersFromSpace();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+					</xe:formRow>
+					<xe:formRow id="formRow3" label="Message to Post" for="djSimpleTextarea1">
+						<xe:djSimpleTextarea id="djSimpleTextarea2" value="#{viewScope.message}">
+						</xe:djSimpleTextarea>
+						<xp:br></xp:br>
+						<xp:button value="Post Message" id="button4">
+							<xp:eventHandler event="onclick" submit="true"
+								refreshMode="partial" refreshId="authenticated">
+								<xp:this.action><![CDATA[#{javascript:sessionBean.postMessageToSpace();}]]></xp:this.action>
+							</xp:eventHandler>
+						</xp:button>
+					</xe:formRow>
+				</xe:formTable>
+			</xp:div>
+		</xp:div>
+
+		<xe:this.configuration>
+			<xe:bootstrapResponsiveConfiguration
+				titleBarName="Watson Work Services Java SDK Demo">
+			</xe:bootstrapResponsiveConfiguration>
+		</xe:this.configuration>
+	</xe:applicationLayout>
+	<xe:dialog id="dialog1" title="New Space">
+		<xp:div styleClass="col-xs-12">
+			<xp:label value="Name:" id="label1" for="newSpaceName"></xp:label>
+			<xp:inputText id="newSpaceName" value="#{requestScope.spaceName}"
+				required="true"></xp:inputText>
+			<xe:dialogButtonBar id="dialogButtonBar1">
+				<xp:div>
+					<xp:button value="Create Space" id="button7">
+						<xp:eventHandler event="onclick" submit="true"
+							refreshMode="complete">
+							<xp:this.action><![CDATA[#{javascript:sessionBean.addSpace();
+getComponent("dialog1").hide("authenticated");}]]></xp:this.action>
+						</xp:eventHandler>
+					</xp:button>
+				</xp:div>
+			</xe:dialogButtonBar>
+		</xp:div>
+	</xe:dialog>
+</xp:view>
