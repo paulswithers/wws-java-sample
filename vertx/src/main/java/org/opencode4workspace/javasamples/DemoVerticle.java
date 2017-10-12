@@ -87,7 +87,7 @@ public class DemoVerticle extends AbstractVerticle {
 		 * Send JSON content with four elements - token, spaceId, emails, and message. e.g.
 		 * {"token":"7tcuLr","spaceId":"5821aeb9f4b0052628e89bb2","emails":["pwithers@intec.co.uk"], "message":"Welcome from demo!"}
 		 * 
-		 * The golder rule of Vertx is don't block the event loop in a handler. 
+		 * The golden rule of Vertx is don't block the event loop in a handler. 
 		 * Calling WW will block - it needs to wait for the response. This is a basic workaround.
 		 * 
 		 */
