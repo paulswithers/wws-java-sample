@@ -39,4 +39,17 @@ You will need a token for each time you run the demo. Open a browser and go to `
 	4. **message**: a string message. To format a message, see https://help.workspace.ibm.com/hc/en-us/articles/229709367-Formatting-your-messages.
 
 ## XPages Sample
-If time permits, the code will be added to a ODA Servlet for Domino
+**NOTE**: To run the XPages app you will need to make changes to the Java security policy. The WWS Java SDK uses Java reflection to auto-convert JSON to Java objects. This is a restricted operation. To make it work, add the following to the "grant" block of your java.policy / java.pol file.
+
+	permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+	permission java.lang.RuntimePermission "accessDeclaredMembers";
+
+**NOTE**: This has not been tested on Domino Designer local preview. It won't be tested on Domino Designer local preview. IBM have a **FREE** developer version available. Use it!
+
+1. Download the XPages Packaged Plugin 1.1.0 from OpenNTF Watson Work Services Java SDK project on [OpenNTF](https://openntf.org/main.nsf/project.xsp?r=project/Watson Work Services Java SDK)
+2. Install the plugin to Domino Designer
+3. Install the plugin on the server
+4. Create a new NSF from the ODP.
+5. Add your appId and appSecret to the Xsp Properties.
+6. Sign and clean the application.
+7. Open the Demo XPage and have fun!

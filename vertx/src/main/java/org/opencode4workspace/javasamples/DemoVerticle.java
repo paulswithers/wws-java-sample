@@ -1,5 +1,23 @@
 package org.opencode4workspace.javasamples;
 
+/*
+
+<!--
+Copyright 2017 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -87,7 +105,7 @@ public class DemoVerticle extends AbstractVerticle {
 		 * Send JSON content with four elements - token, spaceId, emails, and message. e.g.
 		 * {"token":"7tcuLr","spaceId":"5821aeb9f4b0052628e89bb2","emails":["pwithers@intec.co.uk"], "message":"Welcome from demo!"}
 		 * 
-		 * The golder rule of Vertx is don't block the event loop in a handler. 
+		 * The golden rule of Vertx is don't block the event loop in a handler. 
 		 * Calling WW will block - it needs to wait for the response. This is a basic workaround.
 		 * 
 		 */
