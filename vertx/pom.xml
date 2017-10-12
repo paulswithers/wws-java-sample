@@ -9,8 +9,6 @@
 	<properties>
 		<vertx-version>3.4.1</vertx-version>
 		<wws-version>0.7.0</wws-version>
-		<!-- the main class -->
-		<exec.mainClass>org.opencode4workspace.javasamples.MainDemo</exec.mainClass>
 	</properties>
 
 	<dependencies>
@@ -59,7 +57,7 @@
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
 										<Main-Class>io.vertx.core.Starter</Main-Class>
-										<Main-Verticle>com.paulwithers.vertx.BasicDominoDemo</Main-Verticle>
+										<Main-Verticle>org.opencode4workspace.javasamples.DemoVerticle</Main-Verticle>
 									</manifestEntries>
 								</transformer>
 							</transformers>
