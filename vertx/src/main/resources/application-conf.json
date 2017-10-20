@@ -1,6 +1,6 @@
 {
   "http.port" : 8081,
   "wws.redirectUri" : "https://openntf.org",
-  "wws.appId" : "ed5081f2-53d5-42f9-9c06-e84ac753b660",
-  "wws.appSecret" : "htceREs9R9fE00DwBt5rss7DA_Ne"
+  "wws.appId" : "156923ee-490e-49bb-986d-1e7b4f3759b4",
+  "wws.appSecret" : "8fWutTJmr-qB0T3NzI6GxKqS_km5"
 }
