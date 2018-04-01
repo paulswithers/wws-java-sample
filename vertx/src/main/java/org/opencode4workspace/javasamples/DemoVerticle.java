@@ -137,6 +137,8 @@ public class DemoVerticle extends AbstractVerticle {
 				 * Authenticate as app, see https://wiki.openntf.org/display/WWSJava/Running+as+an+Application.
 				 * In the real world, appSecret / appId would be passed in or stored as configuration of our Java application
 				 */
+				System.out.println(config().getString("wws.appId"));
+				System.out.println(config().getString("wws.appSecret"));
 				WWClient client = WWClient.buildClientApplicationAccess(config().getString("wws.appId"), config().getString("wws.appSecret"),
 						new WWAuthenticationEndpoint());
 				client.authenticate();
@@ -185,6 +187,7 @@ public class DemoVerticle extends AbstractVerticle {
 					}
 					x++;
 				}
+				System.out.println(multiPersonQuery.returnQuery());
 				// Authenticate as a user https://wiki.openntf.org/display/WWSJava/Running+as+a+User
 				// In real world, we would run oAuth dance as user and store details for the session or in a persistent store
 				WWClient userClient = WWClient.buildClientUserAccess(obj.getString("token"), config().getString("wws.appId"), config().getString("wws.appSecret"),

@@ -8,14 +8,23 @@
 
 	<properties>
 		<vertx-version>3.4.1</vertx-version>
-		<wws-version>0.7.0</wws-version>
 	</properties>
 
 	<dependencies>
+		
+		<!-- https://mvnrepository.com/artifact/org.opencode4workspace.watson-work-services/wws.parent -->
+		<dependency>
+			<groupId>org.opencode4workspace.watson-work-services</groupId>
+			<artifactId>wws.parent</artifactId>
+			<version>0.8.1</version>
+			<type>pom</type>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.opencode4workspace.watson-work-services/wws-api -->
 		<dependency>
 			<groupId>org.opencode4workspace.watson-work-services</groupId>
 			<artifactId>wws-api</artifactId>
-			<version>${wws-version}</version>
+			<version>0.8.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
 		<dependency>
