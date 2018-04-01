@@ -73,7 +73,7 @@ public class DemoVerticle extends AbstractVerticle {
 	 * browser, inserting redirectUri AND appId.
 	 * 
 	 * https://api.watsonwork.ibm.com/oauth/authorize?client_id=MY_APP_ID&state=3322&scope=ibmid&redirect_uri=REDIRECT_URI&response_type=code
-	 * 
+	 * https://api.watsonwork.ibm.com/oauth/authorize?client_id=156923ee-490e-49bb-986d-1e7b4f3759b4&state=3322&scope=ibmid&redirect_uri=https://openntf.org&response_type=code
 	 * You will need a new one each time you make a request.
 	 */
 
@@ -137,6 +137,8 @@ public class DemoVerticle extends AbstractVerticle {
 				 * Authenticate as app, see https://wiki.openntf.org/display/WWSJava/Running+as+an+Application.
 				 * In the real world, appSecret / appId would be passed in or stored as configuration of our Java application
 				 */
+				System.out.println(config().getString("wws.appId"));
+				System.out.println(config().getString("wws.appSecret"));
 				WWClient client = WWClient.buildClientApplicationAccess(config().getString("wws.appId"), config().getString("wws.appSecret"),
 						new WWAuthenticationEndpoint());
 				client.authenticate();
@@ -154,6 +156,15 @@ public class DemoVerticle extends AbstractVerticle {
 				/*
 				 * Get Person elements from WW for the emails passed - this needs to be run as a user.
 				 * 
+				 * query getPeople {
+				 * 		elem0:person(email:"test1@intec.co.uk"){
+				 * 			id
+				 * 		}
+				 * 		elem1:person(email:"test2@intec.co.uk"){
+				 * 			id
+				 * 		}
+				 * }
+				 * 
 				 * This demonstrates passing multiple queries in a single request as well as aliases. 
 				 * Because we're getting more than one Person object, we can't just retrieve them as "person".
 				 * We need to pass an alias for each. But we can't use the email address for the alias, 
@@ -166,8 +177,8 @@ public class DemoVerticle extends AbstractVerticle {
 					ObjectDataSenderBuilder query = new ObjectDataSenderBuilder();
 					query.setReturnType(WWQueryResponseObjectTypes.PERSON);
 					query.setObjectName("elem" + Integer.toString(x));
-					query.addAttribute(PersonAttributes.EMAIL, email);
-					query.addField(PersonFields.ID);
+					query.addAttribute(PersonAttributes.EMAIL, email)
+						.addField(PersonFields.ID);
 					// This demo highlighted a bug in released version for passing an ObjectDataSenderBuilder list. Instead this is needed
 					if (null == multiPersonQuery) {
 						multiPersonQuery = new BaseGraphQLMultiQuery("getPeople", query);
@@ -176,6 +187,7 @@ public class DemoVerticle extends AbstractVerticle {
 					}
 					x++;
 				}
+				System.out.println(multiPersonQuery.returnQuery());
 				// Authenticate as a user https://wiki.openntf.org/display/WWSJava/Running+as+a+User
 				// In real world, we would run oAuth dance as user and store details for the session or in a persistent store
 				WWClient userClient = WWClient.buildClientUserAccess(obj.getString("token"), config().getString("wws.appId"), config().getString("wws.appSecret"),
@@ -192,8 +204,8 @@ public class DemoVerticle extends AbstractVerticle {
 				ArrayList<String> personIds = new ArrayList<String>();
 				DataContainer data = resultContainer.getData();		
 				if (null != data) {
+					Map<String, Object> people = data.getAliasedChildren();
 					for (x = 0; x < emails.size(); x++) {
-						Map<String, Object> people = data.getAliasedChildren();
 						if (people.containsKey("elem" + Integer.toString(x))) {
 							Person person = (Person) data.getAliasedChildren().get("elem" + Integer.toString(x));
 							personIds.add(person.getId());
@@ -208,9 +220,11 @@ public class DemoVerticle extends AbstractVerticle {
 
 					// We can also post a message, as the app
 					AppMessageBuilder builder = new AppMessageBuilder();
-					builder.setActorAvatar("http://gravatar.com/psw").setActorName("PSW")
-							.setActorUrl("http://www.intec.co.uk").setColor("#FF0000");
-					builder.setMessage(obj.getString("message"));
+					builder.setActorAvatar("http://gravatar.com/psw")
+						.setActorName("PSW")
+						.setActorUrl("http://www.intec.co.uk")
+						.setColor("#FF0000")
+						.setMessage(obj.getString("message"));
 					AppMessage message = builder.build();
 					MessageResponse response = client.postMessageToSpace(message, spaceId);
 					errors.put("messageId", response.getId());

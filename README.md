@@ -7,7 +7,7 @@ This comprises a basic Vertx verticle which can be called from Postman with an t
 
 ### Configuring the Demo
 
-Configuration is in vertx/src/main/conf/application-conf.json. Set the values you wish and save:
+Configuration is in vertx/src/main/resources/application-conf.json. Set the values you wish and save:
 
 - **http.port**: localhost port to use
 - **wws.redirectUri**: the redirect URI to use in the URL to get a token
